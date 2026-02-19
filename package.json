@@ -1,0 +1,9 @@
+{
+    "name": "copyvara-fast",
+    "private": true,
+    "version": "1.0.0",
+    "scripts": {
+        "build": "cd frontend-minimal && npm install && npm run build",
+        "install": "cd frontend-minimal && npm install"
+    }
+}
