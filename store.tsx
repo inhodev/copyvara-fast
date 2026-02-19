@@ -226,15 +226,37 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, []);
 
   useEffect(() => {
-    const newNodes = documents.map(d => ({
+    const newNodes: Node[] = documents.map(d => ({
       id: d.id,
       title: d.title,
       group: d.docType === 'conversation' ? 2 : 1,
       status: d.status,
-      val: d.knowledgeScore, // Size node by knowledge score
-      tags: d.topicTags // Pass tags for visualization
+      val: d.knowledgeScore || 50, // Default to 50 if 0 for visibility
+      tags: d.topicTags || []
     }));
     setNodes(newNodes);
+
+    // Auto-generate edges based on shared tags
+    const newEdges: Edge[] = [];
+    for (let i = 0; i < documents.length; i++) {
+      for (let j = i + 1; j < documents.length; j++) {
+        const docA = documents[i];
+        const docB = documents[j];
+        if (!docA.topicTags || !docB.topicTags) continue;
+
+        const commonTags = docA.topicTags.filter(t => docB.topicTags.includes(t));
+        if (commonTags.length > 0) {
+          newEdges.push({
+            id: `e-${docA.id}-${docB.id}`,
+            source: docA.id,
+            target: docB.id,
+            relation: commonTags[0],
+            status: 'confirmed'
+          });
+        }
+      }
+    }
+    setEdges(newEdges);
   }, [documents]);
 
   useEffect(() => {
