@@ -17,8 +17,7 @@ import { ConceptChord } from '../components/ConceptChord';
 import { useNavigate } from 'react-router-dom';
 import { Network, Calendar, Grid3X3, CircleDashed, PieChart, LayoutGrid, GitFork, Hash, Activity, Radar, Waves, Target, Infinity, X, ExternalLink, FileText, ListTodo, Loader2, Check, AlertTriangle } from 'lucide-react';
 
-type ViewMode = 'graph' | 'timeline' | 'topic' | 'matrix' | 'sunburst' | 'treemap' | 'radial' | 'cloud' |
-    'decay' | 'radar' | 'stream' | 'quadrant' | 'chord';
+type ViewMode = 'graph' | 'timeline' | 'topic' | 'quadrant';
 
 export const GraphPage: React.FC = () => {
     const { nodes, edges, documents, candidates, acceptCandidate, rejectCandidate } = useAppStore();
@@ -61,26 +60,12 @@ export const GraphPage: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-2">
-                    {/* Group 1: Structure */}
+                <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2 overflow-x-auto custom-scrollbar pb-1">
-                        <span className="text-[10px] font-bold text-slate-400 uppercase mr-1">Structure</span>
                         {navBtnClass('graph', <Network size={14} />, "네트워크")}
                         {navBtnClass('topic', <CircleDashed size={14} />, "토픽 맵")}
-                        {navBtnClass('radial', <GitFork size={14} />, "트리")}
-                        {navBtnClass('sunburst', <PieChart size={14} />, "썬버스트")}
-                        {navBtnClass('treemap', <LayoutGrid size={14} />, "트리맵")}
-                    </div>
-
-                    {/* Group 2: Analysis & Insight */}
-                    <div className="flex items-center gap-2 overflow-x-auto custom-scrollbar pb-1 border-t border-slate-100 pt-2">
-                        <span className="text-[10px] font-bold text-brand-400 uppercase mr-1">Insight</span>
                         {navBtnClass('timeline', <Calendar size={14} />, "타임라인")}
-                        {navBtnClass('decay', <Activity size={14} />, "망각 곡선")}
-                        {navBtnClass('radar', <Radar size={14} />, "역량 밸런스")}
-                        {navBtnClass('stream', <Waves size={14} />, "성장 흐름")}
                         {navBtnClass('quadrant', <Target size={14} />, "전략 사분면")}
-                        {navBtnClass('chord', <Infinity size={14} />, "개념 융합")}
                     </div>
                 </div>
             </div>
@@ -98,17 +83,7 @@ export const GraphPage: React.FC = () => {
                             {viewMode === 'graph' && <ForceGraph nodes={nodes} edges={edges} onNodeClick={handleNodeClick} />}
                             {viewMode === 'timeline' && <TimelineView nodes={nodes} edges={edges} onNodeClick={handleNodeClick} />}
                             {viewMode === 'topic' && <TopicMap nodes={nodes} onNodeClick={handleNodeClick} />}
-                            {viewMode === 'matrix' && <MatrixView nodes={nodes} edges={edges} onNodeClick={handleNodeClick} />}
-                            {viewMode === 'sunburst' && <SunburstChart nodes={nodes} onNodeClick={handleNodeClick} />}
-                            {viewMode === 'treemap' && <TreeMap nodes={nodes} onNodeClick={handleNodeClick} />}
-                            {viewMode === 'radial' && <RadialTree nodes={nodes} onNodeClick={handleNodeClick} />}
-                            {viewMode === 'cloud' && <TagCloud nodes={nodes} />}
-
-                            {viewMode === 'decay' && <MemoryDecay nodes={nodes} onNodeClick={handleNodeClick} />}
-                            {viewMode === 'radar' && <CompetenceRadar nodes={nodes} />}
-                            {viewMode === 'stream' && <KnowledgeStream nodes={nodes} />}
                             {viewMode === 'quadrant' && <StrategicQuadrant nodes={nodes} edges={edges} onNodeClick={handleNodeClick} />}
-                            {viewMode === 'chord' && <ConceptChord nodes={nodes} edges={edges} />}
                         </>
                     )}
 
